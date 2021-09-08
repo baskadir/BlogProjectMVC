@@ -1,0 +1,22 @@
+﻿@model List<ArticleVM>
+
+@foreach (var item in Model)
+{
+    <div class="row g-0 overflow-hidden flex-md-row mb-2 shadow-sm position-relative" style="width:33.3%">
+        <div class="col p-4 d-flex flex-column position-static">
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item">
+                    <img src="@("~/Images/"+ item.ImageName)" asp-append-version="true" class="rounded-circle" height="20" alt="ProfilePic" />
+                </li>
+                <li class="list-inline-item">
+                    <a class="d-inline-block mb-2 text-primary text-decoration-none" asp-action="UserDetails" asp-controller="User" asp-route-id="@item.UserId"><strong>@item.UserName</strong></a>
+                </li>
+            </ul>
+            <a asp-action="ArticleDetails" asp-controller="Article" asp-route-id="@item.ArticleId" class="text-decoration-none text-black"><h6 class="mb-0">@item.Title</h6></a>
+            <ul class="list-inline small mt-2">
+                <li class="list-inline-item">@item.CreatedDate.ToString("dd MMM")</li>
+                <li class="list-inline-item">@item.ReadingTime</li>
+            </ul>
+        </div>
+    </div>
+}

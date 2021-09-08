@@ -1,0 +1,37 @@
+﻿@model List<ArticleVM>
+
+@{
+    ViewData["Title"] = "LikedArticlesForUser";
+}
+
+@{
+    int count = 1;
+}
+<div class="container my-5 pt-3">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th scope="col">Başlık</th>
+                <th scope="col">Makale Yazarı</th>
+                <th scope="col">Oluşturulma Tarihi</th>
+                <th scope="col">Detay</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@count</th>
+                    <td>@item.Title</td>
+                    <td>@item.UserName</td>
+                    <td>@Convert.ToDateTime(item.CreatedDate).ToShortDateString()</td>
+                    <td>
+                        <a class="btn btn-success" asp-action="ArticleDetails" asp-controller="Article" asp-route-id="@item.ArticleId">Makaleye Git</a>
+                    </td>
+                </tr>
+                count = count + 1;
+            }
+        </tbody>
+    </table>
+</div>

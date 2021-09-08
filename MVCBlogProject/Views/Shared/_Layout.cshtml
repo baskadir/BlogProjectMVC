@@ -1,0 +1,99 @@
+﻿@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <img src="~/Images/blogLogo.png" alt="" class="navbar-brand mt-0" height="40" />
+            @if (HttpContextAccessor.HttpContext.Session.GetString("email") == null)
+            {
+                <!-- Kayıtlı olmayan kullanıcıların göreceği navbar-->
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Home">Anasayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="About" asp-controller="Home">Hakkımızda</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="d-flex justify-content-around">
+                    <a class="btn btn-outline-dark" type="button" asp-controller="User" asp-action="Login">Giriş Yap</a>
+                    <a class="btn btn-outline-dark ms-2" type="button" asp-controller="User" asp-action="Register">Kayıt Ol</a>
+                </div>
+            }
+            else
+            {
+                int userId = (int)HttpContextAccessor.HttpContext.Session.GetInt32("loginId");
+                <!-- Kayıtlı kullanıcıların göreceği navbar -->
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="User">Anasayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="AddArticle" asp-controller="Article">Makale Yaz</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="UserArticles" asp-controller="Article">Makalelerim</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="UserDetails" asp-controller="User" asp-route-id="@userId">Profilim</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Settings" asp-controller="User">Hesap Ayarlarım</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="LikedArticlesForUser" asp-controller="Article" asp-route-id="@userId">Beğendiğim Makaleler</a>
+                        </li>
+                    </ul>
+                </div>
+
+                string imageName = HttpContextAccessor.HttpContext.Session.GetString("image");
+                <div class="d-flex align-items-center">
+                    <a class="d-flex align-items-center" aria-expanded="false">
+                        <img src="@("~/Images/"+ imageName)" asp-append-version="true" class="rounded-circle" height="40" alt="ProfilePic" />
+                    </a>
+                    <p class="text-dark p-2 m-0">@HttpContextAccessor.HttpContext.Session.GetString("userName")</p>
+
+                    <a type="button" class="btn btn-outline-danger ms-2" asp-controller="User" asp-action="Logout">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                        </svg>
+                        Çıkış Yap
+                    </a>
+                </div>
+            }
+        </div>
+    </nav>
+    <div>
+        @RenderBody()
+    </div>
+    <footer class="d-flex flex-wrap justify-content-between align-items-center p-2 border-top bg-light">
+        <p class="col-md-4 mb-0 text-muted">© 2021 Company, Inc</p>
+        <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+        <ul class="nav col-md-4 justify-content-end">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+        </ul>
+    </footer>
+    <script src="~/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/jquery/jquery.min.js"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>
+
+

@@ -1,0 +1,55 @@
+﻿@model Article
+
+@{
+    ViewData["Title"] = "GetArticle";
+}
+
+<input type="hidden" value="@Model.ArticleID" id="articleId" />
+<input type="hidden" value="@Model.UserID" id="userId" />
+
+
+<div class="container my-5 pt-3">
+    <div id="info"></div>
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-center">Makale Düzenleme Sayfası</h3>
+            <div class="my-3">
+                <label class="fw-bold">Başlık</label>
+                <input id="title" type="text" class="form-control" value="@Model.Title">
+            </div>
+            <div class="mb-3">
+                <label class="fw-bold">İçerik</label>
+                <textarea class="form-control" id="content" rows="5">@Model.Content</textarea>
+            </div>
+            <a class="btn btn-outline-success" id="btnUpdateArticle">Güncelle</a>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $("#btnUpdateArticle").click(function () {
+            let article = {
+                "title": $("#title").val(),
+                "content": $("#content").val(),
+                "articleID": $("#articleId").val(),
+                "userID": $("#userId").val()
+            };
+
+            $.ajax({
+                url: "/Article/UpdateArticle",
+                type: "POST",
+                data: article,
+                success: function (response) {
+                    if (response == "ok") {
+                        $("#info").html('<div class ="alert alert-success" role="alert">Makaleniz başarıyla güncellendi.<div>');
+                    }
+                    else {
+                        $("#info").html('<div class ="alert alert-warning" role="alert">Güncellenirken hata oluştu.<div>');
+                    }
+                }
+            })
+        })
+    </script>
+}
+

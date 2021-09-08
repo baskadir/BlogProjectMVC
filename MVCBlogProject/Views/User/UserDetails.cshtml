@@ -1,0 +1,55 @@
+﻿@model User 
+
+@{
+    ViewData["Title"] = "UserDetails";
+}
+
+<input type="hidden" value="@Model.UserID" id="userId"/>
+
+<div class="container my-5 pt-4">
+    <div class="main-body">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img src="@("~/Images/"+Model.PhotoName)" asp-append-version="true" class="rounded-circle img-thumbnail" width="150">
+                            <div class="mt-3">
+                                <h4>@Model.FullName</h4>
+                                <p class="text-secondary mb-1" id="userName">@Model.UserName</p>
+                                <p class="text-muted font-size-sm">@Model.Description</p>
+                                <button class="btn btn-primary">Takip Et</button>
+                                <button class="btn btn-outline-primary">Mesaj At</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body" id="articleBody">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{ 
+<script>
+    $(document).ready(function () {
+        var id = $("#userId").val();
+        GetUserArticles(id);
+    });
+
+    function GetUserArticles(id) {
+        $.ajax({
+            url: "/Article/UserArticlesPartial/" + id,
+            type: "GET",
+            success: function (response) {
+                $("#articleBody").html(response);
+            }
+        })
+    }
+</script>
+}
+

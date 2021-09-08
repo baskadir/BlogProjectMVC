@@ -1,0 +1,53 @@
+﻿@model Article
+
+@{
+    ViewData["Title"] = "AddArticle";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 my-5">
+            <h3 class="text-center">Makale Ekleme Sayfası</h3>
+            <div class="my-3">
+                <label class="fw-bold">Başlık</label>
+                <input id="title" type="text" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="fw-bold">İçerik</label>
+                <textarea class="form-control" id="content" rows="5"></textarea>
+            </div>
+            <div class="my-3 p-0">
+                <label class="fw-bold">Konular</label>
+                <ul class="d-flex flex-wrap flex-row">
+                    @foreach (Topic item in ViewBag.Topics)
+                    {
+                        <li class="list-inline-item m-3">
+                            <input class="form-check-input" type="checkbox" id="chk@(item.TopicID)" autocomplete="off" name="topic" value="@item.TopicID" />
+                            <label class="form-check-label" for="chk@(item.TopicID)">@item.TopicName</label>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <button class="btn btn-outline-success" id="btnAddArticle">Yeni Makale Oluştur</button>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $("#btnAddArticle").click(function () {
+            var array = $.map($('input[name="topic"]:checked'), function (c) { return c.value; })
+            var articleData = new Object();
+            articleData.title = $("#title").val();
+            articleData.content = $("#content").val();
+            $.ajax({
+                type: "POST",
+                url: "/Article/AddArticle",
+                data: { ids: array, newArticle: articleData },
+                success: function (response) {
+                    window.location.href = response.redirectToUrl;
+                }
+            });
+        });
+    </script>
+}

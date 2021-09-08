@@ -1,0 +1,44 @@
+﻿@model List<int>
+
+@{
+    ViewData["Title"] = "AddTopicForUser";
+}
+
+<div class="container my-5 pt-3">
+    <div class="row text-center">
+        <div class="d-flex flex-column col-6 offset-3">
+            <h3>Devam etmeden önce ilgilendiğiniz konuları seçin</h3>
+            <ul class="d-flex flex-wrap flex-row">
+                @foreach (Topic item in ViewBag.Topics)
+                {
+                    <li class="list-inline-item m-3">
+                        <input class="btn-check" type="checkbox" id="chk@(item.TopicID)" name="topic" value="@item.TopicID" autocomplete="off" />
+                        <label class="btn btn-outline-primary" for="chk@(item.TopicID)">@item.TopicName</label>
+                    </li>
+                }
+            </ul>
+            <button type="button" class="btn btn-outline-dark" id="btnAddTopic">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-forward-fill" viewBox="1 1 16 16">
+                    <path d="m9.77 12.11 4.012-2.953a.647.647 0 0 0 0-1.114L9.771 5.09a.644.644 0 0 0-.971.557V6.65H2v3.9h6.8v1.003c0 .505.545.808.97.557z"></path>
+                </svg>
+                İleri
+            </button>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $("#btnAddTopic").click(function () {
+            var array = $.map($('input[name="topic"]:checked'), function (c) { return c.value; })
+            $.ajax({
+                type: "POST",
+                url: "/User/AddTopicForUser",
+                data: { ids: array },
+                success: function (response) {
+                    window.location.href = response.redirectToUrl;
+                }
+            });
+        });
+    </script>
+}

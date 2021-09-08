@@ -1,0 +1,102 @@
+﻿@model List<ArticleVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="bg-light bg-gradient py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-7">
+                <h3 class="display-4 fw-bold fs-1 lh-base" style="color: rgba(8, 8, 8, 1);">
+                    Blog is a place <br />to write, read, and <br />connect
+                </h3>
+                <p class="display-4 fs-4">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse suscipit, arcu id malesuada eleifend, nulla tortor malesuada ipsum, in dignissim erat tortor nec sem.
+                </p>
+                <a asp-action="Register" asp-controller="User" class="btn btn-outline-dark rounded-pill">Yazmaya Başlayın</a>
+            </div>
+            <div class="col-5 text-center">
+                <img src="~/Images/homePage.jpg" width="300" height="300" alt="" class="rounded-circle">
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="text-secondary" />
+<div class="container my-3">
+    <div class="row">
+        <strong class="mb-3 text-center">EN ÇOK OKUNAN MAKALELER</strong>
+        <div class="col-12 d-flex flex-row flex-wrap" id="trendArticleBody">
+            
+        </div>
+    </div>
+</div>
+<hr class="text-secondary" />
+<div class="container">
+    <div class="row">
+        <div class="col-9">
+            @foreach (var item in Model)
+            {
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item">
+                                <img src="@("~/Images/"+ item.ImageName)" asp-append-version="true" class="rounded-circle" height="20" alt="ProfilePic" />
+                            </li>
+                            <li class="list-inline-item">
+                            <a class="d-inline-block mb-2 text-primary text-decoration-none" asp-action="UserDetails" asp-controller="User" asp-route-id="@item.UserId"><strong>@item.UserName</strong></a>
+                            </li>
+                        </ul>
+                        <a asp-action="ArticleDetails" asp-controller="Article" asp-route-id="@item.ArticleId" class="text-decoration-none text-black"><h3>@item.Title</h3></a>
+                        <p class="card-text">@item.SubTitle</p>
+                        <ul class="list-inline small mt-2">
+                            <li class="list-inline-item">@item.CreatedDate.ToString("dd MMM")</li>
+                            <li class="list-inline-item">@item.ReadingTime</li>
+                        </ul>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-3">
+            <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+                <div href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto">
+                    <span class="fs-6 fw-bold">İlginizi Çekebilecek Konular</span>
+                </div>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    @foreach (var item in ViewBag.TopicNames)
+                    {
+                        <li class="nav-item">
+                            <a href="#" class="nav-link link-dark" aria-current="page">
+                                @item
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetTrendArticles();
+        })
+
+        function GetTrendArticles(id) {
+            $.ajax({
+                url: "/Home/GetTrendArticlesPartial",
+                type: "GET",
+                success: function (response) {
+                    $("#trendArticleBody").html(response);
+                }
+            })
+        }
+    </script>
+}
+

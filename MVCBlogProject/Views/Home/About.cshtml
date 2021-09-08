@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "About";
+}
+
+<div class="mt-5 p-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div>
+                    <h1>
+                        <em>Hakkımızda</em>
+                    </h1>
+                    <p class="fs-2 fw-lighter">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse suscipit, arcu id malesuada eleifend, nulla tortor malesuada ipsum, in dignissim erat tortor nec sem. Aenean quis maximus augue, accumsan ullamcorper elit. Morbi id pulvinar dui. In mattis augue ipsum, id interdum mauris pellentesque lacinia.</p>
+                    <p class="fs-4 fw-light">Daha fazlası için bizimle <a class="btn btn-outline-dark fs-4 fw-normal rounded-pill">iletişime geçin</a></p>
+                </div>
+            </div>
+            <div class="col-6 d-flex justify-content-center align-items-center">
+                <img src="~/Images/about-us.png" class="rounded-pill img-thumbnail" width="400" height="400" />
+            </div>
+        </div>
+        <div class="mt-5">
+            <ul class="list-inline d-flex justify-content-between">
+                <li class="list-inline-item text-center">
+                    <h3 class="fs-1">@ViewBag.UsersCount</h3>
+                    <hr />
+                    <h6 class="fs-4">Yazar Sayısı</h6>
+                </li>
+                <li class="list-inline-item text-center">
+                    <h3 class="fs-1">@ViewBag.ArticlesCount</h3>
+                    <hr />
+                    <h6 class="fs-4">Makale Sayısı</h6>
+                </li>
+                <li class="list-inline-item text-center">
+                    <h3 class="fs-1">@ViewBag.TopicsCount</h3>
+                    <hr />
+                    <h6 class="fs-4">Konu Sayısı</h6>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
